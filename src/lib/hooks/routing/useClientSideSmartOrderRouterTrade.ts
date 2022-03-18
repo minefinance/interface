@@ -80,7 +80,7 @@ export default function useClientSideSmartOrderRouterTrade<TTradeType extends Tr
     }
   }, [config, params, queryArgs, wrapType])
 
-  const { data, error } = usePoll(getQuoteResult, JSON.stringify(queryArgs)) ?? {
+  const { data, error } = usePoll(getQuoteResult, JSON.stringify(queryArgs), isDebouncing) ?? {
     error: undefined,
   }
 
@@ -119,12 +119,10 @@ export default function useClientSideSmartOrderRouterTrade<TTradeType extends Tr
     }
 
     // Returns the last trade state while syncing/loading to avoid jank from clearing the last trade while loading.
-    if (!error) {
+    if (!quoteResult && !error) {
       if (isStale) {
         return { state: TradeState.LOADING, trade: undefined }
-      }
-
-      if (isDebouncing) {
+      } else if (isDebouncing) {
         return { state: TradeState.SYNCING, trade }
       } else if (isLoading) {
         return { state: TradeState.LOADING, trade }
