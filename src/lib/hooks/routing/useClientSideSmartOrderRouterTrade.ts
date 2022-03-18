@@ -151,5 +151,17 @@ export default function useClientSideSmartOrderRouterTrade<TTradeType extends Tr
       return { state: TradeState.VALID, trade }
     }
     return { state: TradeState.INVALID, trade: undefined }
-  }, [currencyIn, currencyOut, error, quoteResult, route, queryArgs, trade, isDebouncing, isLoading, tradeType])
+  }, [
+    currencyIn,
+    currencyOut,
+    error,
+    isDebouncing,
+    isLoading,
+    isStale,
+    queryArgs,
+    quoteResult,
+    route,
+    trade,
+    tradeType,
+  ])
 }
